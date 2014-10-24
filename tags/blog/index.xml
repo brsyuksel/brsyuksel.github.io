@@ -3,7 +3,7 @@
   <channel>
       <title>Blog on barış yüksel </title>
       <generator uri="https://hugo.spf13.com">Hugo</generator>
-    <link>http://brsyuksel.com/tags/blog/index.xml/</link>
+    <link>http://brsyuksel.github.io/tags/blog/index.xml/</link>
     <language>tr_TR</language>
     
     
@@ -11,10 +11,10 @@
     
     <item>
       <title>yeni blog</title>
-      <link>http://brsyuksel.com/post/yeni-blog/</link>
+      <link>http://brsyuksel.github.io/post/yeni-blog/</link>
       <pubDate>Fri, 24 Oct 2014 03:19:43 EEST</pubDate>
       
-      <guid>http://brsyuksel.com/post/yeni-blog/</guid>
+      <guid>http://brsyuksel.github.io/post/yeni-blog/</guid>
       <description>&lt;p&gt;öğrencilik hayatımın devam ediyor olmasının yanında getirdiği maddi nedenlerden ötürü blogumun barındığı &lt;a href=&#34;http://digitalocean.com&#34;&gt;do&lt;/a&gt; droplet&amp;rsquo;imi kapatmak zorunda kaldım. gün içerisinde hızlıca &lt;a href=&#34;http://gohugo.io&#34;&gt;hugo engine&lt;/a&gt; ile static bir blog oluşturdum ve &lt;a href=&#34;https://pages.github.io&#34;&gt;github pages&lt;/a&gt; ile yayına aldım. kısa süre içerisinde de eski yazıları buraya alacağım.&lt;/p&gt;
 
 &lt;p&gt;go ile geliştirilmiş &lt;a href=&#34;http://gohugo.io&#34;&gt;hugo&lt;/a&gt; ile tanışmanızı öneririm. benim kendisini tercih etmemdeki en önemli etken, bir daha kullanacağımı düşünmediğim bağımlılıkları kurmak istemiyor olmam. hugo&amp;rsquo;nun &lt;a href=&#34;https://github.com/spf13/hugo/releases&#34;&gt;prebuilt version&lt;/a&gt;&amp;lsquo;larından size uygun olanı indirip kurulum &amp;amp; derleme yapmadan kullanmaya başlayabilirsiniz.&lt;/p&gt;
