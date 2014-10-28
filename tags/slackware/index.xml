@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>Slackware on barış yüksel </title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <link>http://brsyuksel.github.io/tags/slackware/index.xml/</link>
+    <language>tr_TR</language>
+    
+    
+    <updated>Tue, 01 Jul 2014 18:58:47 &#43;0200</updated>
+    
+    <item>
+      <title>slackware tagfile</title>
+      <link>http://brsyuksel.github.io/post/slackware-tagfiles/</link>
+      <pubDate>Tue, 01 Jul 2014 18:58:47 &#43;0200</pubDate>
+      
+      <guid>http://brsyuksel.github.io/post/slackware-tagfiles/</guid>
+      <description>&lt;p&gt;slackware kurulumu yaparken siz de benim gibi yüklü miktarda paket yüklemek istemiyor ve bunun sonucu olarak yükleme sırasında &lt;a href=&#34;http://docs.slackware.com/_media/slackware:setup_install_cl.png&#34; title=&#34;resim&#34;&gt;select prompting mode&lt;/a&gt; menüsünde &lt;strong&gt;expert&lt;/strong&gt; seçeneği ile devam edip yüklenecek paketleri tek tek seçiyorsanız, yine benim gibi çok sıkılıyorsunuzdur.&lt;/p&gt;
+
+&lt;p&gt;bu işlemi sonraki yüklemelerde otomatize etmek için slackware kurulumunda &lt;strong&gt;tagfile&lt;/strong&gt; seçeneği mevcut. slackware tagfile&amp;rsquo;ları, yükleme medyasında paketlerin bulunduğu dizinde &lt;em&gt;( 32-bit için &lt;strong&gt;/slackware&lt;/strong&gt;, 64-bit için &lt;strong&gt;/slackware64&lt;/strong&gt; )&lt;/em&gt; her kategori altında &lt;strong&gt;tagfile&lt;/strong&gt; ismiyle bulunuyor. bu dosyaları direkt olarak düzenleyebilirsiniz de ancak yeni bir klasör oluşturup paketleri içeren klasör ile aynı dizin yapısını oluşturarak her kategori için tagfile oluşturmak daha doğru olacaktır.&lt;/p&gt;
+
+&lt;p&gt;paketlerin bulunduğu dizine girin ve bu komutu çalıştırın: &lt;code&gt;mkdir ~/tagfiles &amp;amp;&amp;amp; cp -Rv --parents */tagfile ~/tagfiles/&lt;/code&gt;
+bu komut ile tagfile dizininizi oluşturmuş olacaksınız.&lt;/p&gt;
+
+&lt;p&gt;sonrasında paket kategorileri altındaki tagfile&amp;rsquo;ları kendinize göre düzenlemelisiniz. tagfile dosyasını açıp paket isimlerinin karşılığına, yüklenmesini istediğiniz paket için &lt;strong&gt;ADD&lt;/strong&gt;, yüklenmesini istemediğiniz paket için &lt;strong&gt;SKP&lt;/strong&gt; ve kullanıcıya sorarak yüklenecek paketler için &lt;strong&gt;REC&lt;/strong&gt; yazmalısınız. tagfile oluşturma işlemi bu kadar basit.&lt;/p&gt;
+
+&lt;p&gt;tagfile&amp;rsquo;ları da düzenledikten sonra kurulum anında &lt;em&gt;( kurulum medyanız oluşturduğunuz tagfile klasörünü barındırmalı )&lt;/em&gt; &lt;a href=&#34;http://docs.slackware.com/_media/slackware:setup_install_cl.png&#34; title=&#34;resim&#34;&gt;select prompting mode&lt;/a&gt;&amp;lsquo;da &lt;strong&gt;tagpath&lt;/strong&gt; seçeneği ile devam edip tagfiles klasörünün tam yolunu vermelisiniz. bu işlemden sonra yükleme işlemi başlayacak ve slackware paketleri otomatik olarak yüklenecektir.&lt;/p&gt;
+
+&lt;p&gt;ben kendi tagfile&amp;rsquo;larımı &lt;a href=&#34;https://github.com/brsyuksel/slackware-tagfiles.git&#34; title=&#34;slackware tagfiles&#34;&gt;github hesabımda&lt;/a&gt; paylaştım, kullanmak isteyenler için özetle; base slackware yükleniyor, desktop environment&amp;rsquo;ler (gnome,kde,xfce,fluxbox,&amp;hellip;), display managerlar (gdm,kdm,xdm,&amp;hellip;), multimedya uygulamaları, rss okuyucu-irc-pidgin gibi mesajlaşma uygulamaları, x&amp;rsquo;in bazı uygulamaları yüklenmiyor, sonrasında slackware&amp;rsquo;ı kendim yapılandırarak dilediğim gibi kullanıyorum.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

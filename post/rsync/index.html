@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      rsyncd, rsync daemon &middot; barış yüksel
+    
+  </title>
+
+  
+  <link rel="stylesheet" href="/css/poole.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <link rel="stylesheet" href="/css/lanyon.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700|PT+Sans:400">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/assets/favicon.ico">
+
+  
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>barış yüksel</p>
+    <p><em>python, go, c, linux</em></p>
+    <p><a href="https://twitter.com/brsyuksel">twitter</a> &middot; <a href="https://github.com/brsyuksel">github</a> &middot; <a href="https://www.linkedin.com/pub/bar%C4%B1%C5%9F-y%C3%BCksel/54/178/273">linkedin</a></p>
+
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item " href="/">home</a>
+    <a class="sidebar-nav-item " href="/post">posts</a>
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>&copy; barış yüksel 2014.</p>
+  </div>
+</div>
+
+
+    
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">barış yüksel</a>
+            <small>in code we trust</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+
+
+<div class="post">
+  <h1 class="post-title">rsyncd, rsync daemon</h1>
+  <span class="post-date">1 jan, 2014</span>
+  <p>rsync, dosya transferinden zaman kazandıracak güzel yeteneklere sahip popüler bir uygulama. local ve uzak bilgisayar üzerinde dosya transferi yapabilmenizi sağlayan rsync&rsquo;in en dikkat çekici özelliği sadece değişiklikleri transfer ederek transfer noktaları arasındaki senkronizasyonu sağlamasıdır. bunun yanında diğer bir özellik olarak da linkler, soketler, device&rsquo;lar, dosya sahipliği ve izinlerin kopyalanmasını destekler. rsync mirroring için en ideal yazılımdır. daha fazlası için <a href="http://en.wikipedia.org/wiki/Rsync" title="wikipedia-rsync">burdan</a> devam edin.</p>
+
+<p>rsync ile genelde uzak bilgisayarlar arasında ssh üzerinden bağlantı sağlanıyor. yerine göre doğru bir tercih olsa da local&rsquo;de yer alan sanal makinelerde rsync&rsquo;i daemon olarak kullanmak daha verimli olabilir. basit bir yapılandırma ile rsync&rsquo;i daemon olarak başlatabilirsiniz.</p>
+
+<p>server tarafında ilk işimiz <code>/etc/rsyncd.conf</code> dosyası ile. bu dosyada rsync daemon&rsquo;u için belirli tanımlamaları yapıp sonra rsnyc&rsquo;in dökümanında yer alan tabirle modüller halinde hedef klasörlerimizi tanımlayacağız.</p>
+
+<p>motd file=/path/to/motdfile.txt
+  pid file=/var/run/rsyncd.pid</p>
+
+<p>[project1]
+    comment=project1 rsync dir
+    path=/path/to/project1
+    use chroot=true
+    read only=false
+    log file=/path/to/logs/project1.log
+    uid=0
+    gid=0
+    filter=<em>.pyc tmp/
+    exclude=</em>.swp
+    auth users=kullanici
+    secrets file=/etc/rsyncd.secrets</p>
+
+<p><strong>motd file</strong>, login, sshd vs den de tanıdık gelecektir, &ldquo;message of the day&rdquo; dosyası. rsync ile bağlantı sonrasında kullanıcıya göstermek istediğiniz mesajı bir dosyaya kaydedip bu değişken ile belirtiyorsunuz.
+<strong>pid file</strong>, rsync daemon&rsquo;u için pid dosyası.</p>
+
+<p>bu noktadan sonra modül tanımlarına geçiyoruz. ancak daha fazla global tanımlar için <code>man rsyncd.conf</code> komutu ile man sayfasından bilgi alabilirsiniz.</p>
+
+<p>rsync daemon&rsquo;u için modüller fark ettiğiniz gibi <em>[]</em> içinde tanımlanıyor. bu modüllerin kendi içerisinde belirli tanımları içermesi gerekiyor ve rsync komutu ile dosya transferi sağlanırken, sunucu üzerindeki realpath&rsquo;i değil, modül ismini uri&rsquo;de path bilgisi olarak vermeniz gerekiyor.</p>
+
+<p>örnek modüldeki tanımlara bakalım.
+<strong>comment</strong>, modül hakkında bilgi. rsync ile list yaptığınız anda kullanıcıya gösteriliyor.
+<strong>path</strong>, senkronizasyon yapılacak klasör yolu.
+<strong>use chroot</strong>, dosya transferi başlamadan önce rsnyc daemonunun klasör içerisinde chroot olmasını sağlar.
+<strong>read only</strong>, default olarak true değerini alan bu parametre dosyaları <strong>yazılamaz</strong> yapar, klasör sadece download&rsquo;a açıktır.
+<strong>log file</strong>, dosya transferi log dosyası yolu.
+<strong>uid, gid</strong>, dosya transfer işlemi gerçekleştikten sonra sahipliği bu user-group olacak şekilde bu id&rsquo;li kullanıcıya teslim edilir.
+<strong>filter</strong>, bu tanım ile belirlediğiniz klasör ve türdeki dosyaları download&rsquo;a kapatabiliyorsunuz.
+<strong>exclude</strong>, filter gibi bu tanımla da upload anında belirlediğiniz dosyaların yüklenmesini engelleyebiliyorsunuz.
+<strong>auth users</strong>, bu modül için erişim haklarına sahip kullanıcılar.
+<strong>secrets file</strong>, kullanıcıların username:password bilgisinin yer aldığı dosya.</p>
+
+<p>yine daha fazla bilgi için <code>man rsyncd.conf</code> ile man sayfasına göz atın.</p>
+
+<p>şimdi <em>kullanici</em> isimli kullanıcımızı <code>/etc/rsyncd.secrets</code> dosyasına eklememiz gerekiyor. bu dosyada kullanıcı ve şifre bilgisi <strong>:</strong> ile kolonlara ayrılmış olup, her kullanıcı bilgisi alt alta plain text olarak yazılıyor.</p>
+
+<p><code>/etc/rsyncd.secrets</code></p>
+
+<p>kullanici:123456SFR
+  baris:sifreSFR</p>
+
+<p>tanımlamaları yapıktan sonra sıradaki iş rsync&rsquo;i daemon olarak başlatmakta. ilk önce <code>/etc/services</code> dosyasında rsync port ve protokol tanımının yapılıp yapılmadığını kontrol ediyoruz. yapılmamışsa aşağıdaki örnek çıktıyı bu dosyaya ekleyebilirsiniz.</p>
+
+<pre><code class="language-bash">cat /etc/services | grep rsync
+</code></pre>
+
+<p>rsync   873/tcp
+  rsync   873/udp</p>
+
+<p>bu noktada önemli, internet daemon&rsquo;ları bazı dağıtımlarda inet daemon&rsquo;u tarafından yönetilirken bazı dağıtımlarda inetd&rsquo;nin yerine gelen xinetd tarafından yönetiliyor. slackware inetd ile çalıştığından ben inetd yapılandırma dosyası hakkında bilgi verebileceğim.</p>
+
+<p><code>/etc/inetd.conf</code> yapılan eklemeler belirli bir formatta oluyor, rsync daemonu için yapacağımız ekleme şu şekilde:</p>
+
+<p>rsync   stream  tcp     nowait  root   /usr/bin/rsync rsyncd &ndash;daemon</p>
+
+<p>bu eklemeyi yapıp kaydettikten sonra inetd&rsquo;ye HUP sinyali gönderip .conf dosyasını yeniden okumasını sağlıyoruz.</p>
+
+<pre><code class="language-bash">kill -HUP `pidof inetd`
+</code></pre>
+
+<p>bu aşamadan sonra rsync üzerinden bağlantı gerçekleştirebilirsiniz.</p>
+
+<pre><code class="language-bash">rsync -rtvh rsync://kullanici@server.ip/project1 lokal/hedef/klasor
+</code></pre>
+
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-49309607-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  </body>
+</html>
+

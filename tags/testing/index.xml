@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>Testing on barış yüksel </title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <link>http://brsyuksel.github.io/tags/testing/index.xml/</link>
+    <language>tr_TR</language>
+    
+    
+    <updated>Mon, 01 Sep 2014 18:52:27 &#43;0200</updated>
+    
+    <item>
+      <title>mocha - js/cs test framework</title>
+      <link>http://brsyuksel.github.io/post/mocha/</link>
+      <pubDate>Mon, 01 Sep 2014 18:52:27 &#43;0200</pubDate>
+      
+      <guid>http://brsyuksel.github.io/post/mocha/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://visionmedia.github.io/mocha/&#34;&gt;mocha&lt;/a&gt;, node.js ve aynı zamanda browser&amp;rsquo;larda çalışabilen bir javascript test framework&amp;rsquo;ü. bir çok test interface&amp;rsquo;i, assertion library&amp;rsquo;si desteği, çalışma zamanı seçenekleri ile gerçekten yeterince olgun ve kolaylık sağlayan bir framework. ayrıca coffeescript desteği mevcut olması benim için tercih sebeplerinden bir tanesi oldu.&lt;/p&gt;
+
+&lt;p&gt;ben bu yazıda mocha&amp;rsquo;yı node.js üzerinde bdd interface&amp;rsquo;i ve node.js&amp;rsquo;in default assert kütüphanesi ile nasıl kullanabileceğinizden bahsedeceğim. uygulama geliştirirken test yazmanız için yeterli olacaktır ancak &lt;a href=&#34;http://visionmedia.github.io/mocha/#interfaces&#34;&gt;diğer interface&lt;/a&gt;&amp;lsquo;ler ve &lt;a href=&#34;http://visionmedia.github.io/mocha/#assertions&#34;&gt;assertion kütüphanelerini&lt;/a&gt; kullanmak dilerseniz onlar da gayet kolay.&lt;/p&gt;
+
+&lt;h1 id=&#34;toc_0&#34;&gt;node.js assert kütüphanesi&lt;/h1&gt;
+
+&lt;p&gt;mocha&amp;rsquo;yı kullanmadan önce node.js&amp;rsquo;in assert kütüphanesini tanımak önemli. assert kütüphanesinde detaylandırılacak pek bir nokta yok bu nedenle kütüphaneyi method&amp;rsquo;larıyla ve küçük örneklerle hızlıca tanıtacağım.&lt;/p&gt;
+
+&lt;p&gt;assert kütüphanesi method&amp;rsquo;ları, parametre olarak verilen değer(ler) için karşılaştırma yapar. belirli durumlar için karşılaştırma method&amp;rsquo;ları mevcut olup şartın sağlanmaması durumunda &lt;strong&gt;AssertionError&lt;/strong&gt; throw ederler.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;assert.ok(value, [message]); // assert(value, [message])
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;bu method bir değerin undefined/null olup olmadığını test eder. yani yapılan işlem şudur: &lt;code&gt;!!value == true&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;assert.ifError(value)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;bu method ise &lt;strong&gt;assert.ok&lt;/strong&gt;&amp;lsquo;un olumsuzu olarak kullanılabilir. false değerler için sağlanırken, true değerler için exception throw edilir.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;assert.equal(a, b, [message])
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;bu method ile a ve b değerlerinin eşitliği karşılaştırılır, &amp;ldquo;a == b&amp;rdquo;. olumsuzu için, yani &amp;ldquo;a != b&amp;rdquo; için &lt;code&gt;assert.notEqual&lt;/code&gt; benzer şekilde kullanılır.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;assert.deepEqual(a, b, [message])
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;verilen değerlere çeşitli karşılaştırma yapar. object olmayanlar için &amp;ldquo;==&amp;rdquo; karşılaştırması, date objectler için getTime karşılaştırması, objectler içinse size, key, lenght gibi çeşitli karşılaştırmalar yapar. olumsuz koşul için &lt;code&gt;assert.notDeepEqual&lt;/code&gt; kullanılır.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;assert.strictEqual(a, b, [message])
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;değerler arasında strict karşılaştırma yapar, &amp;ldquo;a === b&amp;rdquo;. olumsuzu için &lt;code&gt;assert.notStrictEqual&lt;/code&gt; kullanılır.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;assert.throws(block, [error], [message])
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;bu method ile verilen block&amp;rsquo;un error throw etme durumu kontrol edilir. error parametresi ile regexp bir value olarak verildiğinde exception mesajı ile eşleşmesi kontrol edilirken, function olarak da verilip kullanıcı tanımlı işlem gerçekleştirilebilir. yine exception throw etmeyen durumlar için &lt;code&gt;assert.doesNotThrow(block, [message])&lt;/code&gt; kullanılabilir.&lt;/p&gt;
+
+&lt;h1 id=&#34;toc_1&#34;&gt;mocha&lt;/h1&gt;
+
+&lt;p&gt;mocha&amp;rsquo;nın npm ile kurulumunu şu şekilde: &lt;code&gt;npm install -g mocha&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;mocha ile test yazmaya başlamadan önce yapmanız gereken, &lt;strong&gt;proje dizini altında test adında bir klasör oluşturmak ve test kodlarını içeren dosyaları bu klasör altında bulundurmak.&lt;/strong&gt; mocha, çalıştırıldığı zaman bu klasörü arıyor ve burdaki test kodlarını içeren dosyaları yürütüyor.&lt;/p&gt;
+
+&lt;p&gt;bdd interface&amp;rsquo;i ile senaryo üzerine test kodu yazılır. mocha&amp;rsquo;nın bdd interface&amp;rsquo;i için api&amp;rsquo;lerinden ilk karşılaşacağımız &lt;strong&gt;describe&lt;/strong&gt;. bu method ile test case&amp;rsquo;lerinizi barındıran bir &lt;em&gt;suite&lt;/em&gt; oluşturuyorsunuz. gerektiği taktirde nested olarak da kullanabiliyorsunuz. daha sonra da bu suite altında &lt;strong&gt;it&lt;/strong&gt; method&amp;rsquo;unu kullanarak senaryonuza yönelik testlerinizi yazıyorsunuz.&lt;/p&gt;
+
+&lt;p&gt;genel kullanıma bir örnek:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-coffeescript&#34;&gt;describe &amp;quot;tests&amp;quot;, -&amp;gt;
+  it &amp;quot;should return 0 when the value is not present&amp;quot;, -&amp;gt;
+    # ...
+  it &amp;quot;should return positive when the value is negative&amp;quot;, -&amp;gt;
+    # ...
+  describe &amp;quot;nested tests&amp;quot;, -&amp;gt;
+    it &amp;quot;should ...&amp;quot;, -&amp;gt;
+      # ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;bu örnek ile &lt;strong&gt;sync&lt;/strong&gt; çalışan kodlarınız için test-case&amp;rsquo;ler yazmanız mümkün. &lt;strong&gt;async&lt;/strong&gt; için ise, test-case&amp;rsquo;i tanımlarken &lt;strong&gt;it&lt;/strong&gt; fonksiyonunda tanımladığımız callback fonksiyonu, &lt;strong&gt;bir&lt;/strong&gt; parametre alacak şekilde tanımlıyoruz. mocha, bu durumda fonksiyonu &lt;strong&gt;bir callback parametresi&lt;/strong&gt; ile çağırıyor ve test-case&amp;rsquo;in sonuçlanması için kendisi tarafından verilen bu &lt;strong&gt;callback&amp;rsquo;in çağrılmasını&lt;/strong&gt; bekliyor. eğer bu callback bir parametre ile çağrılmıyorsa sonuç başarılı, bir error parametresi ile çağrılıyorsa sonuç başarısız kabul ediliyor. async fonksiyonlarınızda callback parametresi ya da promise kullanarak bu callback&amp;rsquo;in çağrılmasını sağlayabilirsiniz.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-coffeescript&#34;&gt;f = (x) -&amp;gt; unless x then 0 else x
+
+describe &amp;quot;sync test&amp;quot;, -&amp;gt;
+  it &amp;quot;should return 0 when the value is not present&amp;quot;, -&amp;gt;
+    assert.equal f(), 0
+
+describe &amp;quot;async test&amp;quot;, -&amp;gt;
+  it &amp;quot;should do nothing when the file is exists&amp;quot;, (done) -&amp;gt;
+    fs = require &#39;fs&#39;
+    fs.exists &#39;/etc/passwd&#39;, (e) -&amp;gt;
+      unless e then done new Error else done()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;bdd interface&amp;rsquo;inde test-case&amp;rsquo;lerin yürütülme öncesi ve sonrası için belirli rutinleri gerçekleştirebilmeniz adına hook&amp;rsquo;lar mevcut. &lt;strong&gt;before&lt;/strong&gt; hook&amp;rsquo;u ile herhangi bir test-case yürütülmeden önce, &lt;strong&gt;after&lt;/strong&gt; ile suite altındaki tüm test-case&amp;rsquo;ler bittikten sonra çalıştırılacak callback&amp;rsquo;ler tanımlayabilirsiniz. benzer şekilde &lt;strong&gt;beforeEach&lt;/strong&gt; ile suite altındaki her test-case yürütülmeden önce ve &lt;strong&gt;afterEach&lt;/strong&gt; ile de suite altındaki her test-case yürütüldükten sonra çağrılacak callback&amp;rsquo;ler tanımlayabilirsiniz. &lt;em&gt;diğer interface&amp;rsquo;ler için de belirli hook&amp;rsquo;lar var ve bunlar da yine bdd hook&amp;rsquo;ları gibi gayet kolay.&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-coffeescript&#34;&gt;describe &amp;quot;before-after&amp;quot;, -&amp;gt;
+  before -&amp;gt; console.log &amp;quot;hic test yurutulmedi...&amp;quot;
+  after -&amp;gt; console.log &amp;quot;butun testler bitti...&amp;quot;
+  beforeEach -&amp;gt; console.log &amp;quot;bir test yurutulecek...&amp;quot;
+  afterEach -&amp;gt; console.log &amp;quot;bir test bitti...&amp;quot;
+  # ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;bundan sonrası suite&amp;rsquo;ler ve test-case&amp;rsquo;ler için kullanışlı methodlar.&lt;/p&gt;
+
+&lt;p&gt;bir çok test arasında kaybolmaya başladığınızda &lt;code&gt;describle.only&lt;/code&gt; ve &lt;code&gt;it.only&lt;/code&gt; kullanarak &lt;strong&gt;sadece bir suite ya da test-case&lt;/strong&gt;&amp;lsquo;in çalışmasını sağlayabilirsiniz. test sonuçları çıktısında sadece ilgili testlerin sonuçlarını göreceksiniz.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;describe.skip&lt;/code&gt; ve &lt;code&gt;it.skip&lt;/code&gt; ile ilgili &lt;strong&gt;suite/test-case&amp;rsquo;in çalışmasını engelleyebilirsiniz&lt;/strong&gt;. bu durumda ilgili test, pending olarak sonuçlanacaktır.&lt;/p&gt;
+
+&lt;p&gt;bir test-case&amp;rsquo;i &lt;strong&gt;pending&lt;/strong&gt; olarak tanımlamak istiyorsanız, it fonksiyonuna callback tanımlamayarak sağlayabilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;ve testleri çalıştırma işlemi. javascript ile yazdığınız testleri sonuçlandırmak istiyorsanız:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mocha
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;coffeescript için ise bir parametreye ihtiyaç duyuyoruz:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mocha --compilers coffee:coffee-script/register
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;test dosyalarınızdaki değişikliğin mocha tarafından takip edilerek değişiklik sonrası otomatik olarak çalıştırılması için:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mocha --watch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;son olarak her seferinde bu parametreleri tekrar tekrar yazmak istemiyorsanız, &lt;strong&gt;test&lt;/strong&gt; klasörü altında &lt;strong&gt;mocha.opts&lt;/strong&gt; adında bir dosya oluşturun ve şu şekilde düzenleyin:&lt;/p&gt;
+
+&lt;p&gt;&amp;ndash;compilers coffee:coffee-script/register
+  -R spec
+  &amp;ndash;watch&lt;/p&gt;
+
+&lt;p&gt;bu dosyayı düzenledikten sonra sadece &lt;code&gt;mocha&lt;/code&gt; komutunu vermek yeterli olacak.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://visionmedia.github.io/mocha/&#34;&gt;mocha&lt;/a&gt;&amp;lsquo;nın sitesinden diğer interface&amp;rsquo;lere, reporter&amp;rsquo;lara, browser support&amp;rsquo;a ve diğer yeteneklerine bakmayı ihmal etmeyin.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
