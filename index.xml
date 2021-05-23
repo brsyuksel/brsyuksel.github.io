@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ybaroj | in code we trust</title>
+    <link>https://brsyuksel.github.io/</link>
+    <description>Recent content on ybaroj | in code we trust</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>baris yuksel</copyright>
+    <lastBuildDate>Sun, 23 May 2021 23:36:23 +0300</lastBuildDate><atom:link href="https://brsyuksel.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>kitap onerisi: apache spark quick start guide</title>
+      <link>https://brsyuksel.github.io/posts/hadoop-spark/</link>
+      <pubDate>Sun, 23 May 2021 23:36:23 +0300</pubDate>
+      
+      <guid>https://brsyuksel.github.io/posts/hadoop-spark/</guid>
+      <description>sirkette bazi uzaylilar var. bu uzaylilari taniyalim.
+spark, spark sql, hadoop, hive, pig, yarn, &amp;hellip;
+her biri yillar boyu benim icin uzayli arkadaslardi. bir yandan da yillardir kenarindan kosesinden bulasip, az bir seviyede de olsa bilgi sahibi olmak istiyordum.
+is yerinde hem sorumluluk alabilmek, hem akisi daha iyi anlayabilmek hem de yer yer mudahale edebilmek icin bu uzayli arkadaslarla tanismaya karar verdim. bunun icin de amacima hizmet edebilecek bir kitap arayisina koyuldum ki su kitabi buldum:</description>
+    </item>
+    
+  </channel>
+</rss>
