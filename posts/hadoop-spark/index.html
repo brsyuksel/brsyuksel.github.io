@@ -15,8 +15,8 @@ her biri yillar boyu benim icin uzayli arkadaslardi. bir yandan da yillardir ken
 is yerinde hem sorumluluk alabilmek, hem akisi daha iyi anlayabilmek hem de yer yer mudahale edebilmek icin bu uzayli arkadaslarla tanismaya karar verdim. bunun icin de amacima hizmet edebilecek bir kitap arayisina koyuldum ki su kitabi buldum:" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://brsyuksel.github.io/posts/hadoop-spark/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-05-23T23:36:23&#43;03:00" />
-<meta property="article:modified_time" content="2021-05-23T23:36:23&#43;03:00" />
+<meta property="article:published_time" content="2021-05-23T23:36:23+03:00" />
+<meta property="article:modified_time" content="2021-05-23T23:36:23+03:00" />
 
 
   <meta name="twitter:card" content="summary"/>
@@ -73,6 +73,12 @@ is yerinde hem sorumluluk alabilmek, hem akisi daha iyi anlayabilmek hem de yer 
     <span id="actions">
       <ul>
         
+        
+        <li>
+          <a class="icon" href="https://brsyuksel.github.io/posts/graalvm-native-image/" aria-label="Next">
+            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
+          </a>
+        </li>
         
         <li>
           <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
@@ -219,16 +225,16 @@ is yerinde hem sorumluluk alabilmek, hem akisi daha iyi anlayabilmek hem de yer 
 <p><em>local&rsquo;de ssh server kurup, kendi id_rsa.pub&rsquo;inizi authorized key yapin. size birakiyorum bu adimi (:</em></p>
 </blockquote>
 <p>extract edince <code>etc/hadoop/hadoop-env.sh</code> dosyasini bulacaksiniz, bu dosya icinde hizlica <code>JAVA_HOME</code> set ediyoruz:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export JAVA_HOME<span style="color:#f92672">=</span>/usr/java/latest
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export JAVA_HOME<span style="color:#f92672">=</span>/usr/java/latest
 </code></pre></div><p><code>etc/hadoop/core-site.xml</code> dosyasi:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;configuration&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;configuration&gt;</span>
     <span style="color:#f92672">&lt;property&gt;</span>
         <span style="color:#f92672">&lt;name&gt;</span>fs.defaultFS<span style="color:#f92672">&lt;/name&gt;</span>
         <span style="color:#f92672">&lt;value&gt;</span>hdfs://localhost:9000<span style="color:#f92672">&lt;/value&gt;</span>
     <span style="color:#f92672">&lt;/property&gt;</span>
 <span style="color:#f92672">&lt;/configuration&gt;</span>
 </code></pre></div><p><code>etc/hadoop/hdfs-site.xml</code> dosyasi:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;configuration&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;configuration&gt;</span>
     <span style="color:#f92672">&lt;property&gt;</span>
         <span style="color:#f92672">&lt;name&gt;</span>dfs.replication<span style="color:#f92672">&lt;/name&gt;</span>
         <span style="color:#f92672">&lt;value&gt;</span>1<span style="color:#f92672">&lt;/value&gt;</span>
@@ -244,14 +250,14 @@ is yerinde hem sorumluluk alabilmek, hem akisi daha iyi anlayabilmek hem de yer 
 <span style="color:#f92672">&lt;/configuration&gt;</span>
 </code></pre></div><p>ilgili dizinleri olusturun: <code>/opt/hadoop/hdfs/datanode</code> ve <code>/opt/hadoop/hdfs/namenode</code>. <em>bu dizinlerde hdfs&rsquo;e eklediginiz dosyalari goreceksiniz, merak ediyorsaniz kurcalayabilirsiniz, simdilik pek gerek yok.</em></p>
 <p><code>etc/hadoop/mapred-site.xml</code> dosyasi:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;configuration&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;configuration&gt;</span>
     <span style="color:#f92672">&lt;property&gt;</span>
         <span style="color:#f92672">&lt;name&gt;</span>mapreduce.framework.name<span style="color:#f92672">&lt;/name&gt;</span>
         <span style="color:#f92672">&lt;value&gt;</span>yarn<span style="color:#f92672">&lt;/value&gt;</span>
     <span style="color:#f92672">&lt;/property&gt;</span>
 <span style="color:#f92672">&lt;/configuration&gt;</span>
 </code></pre></div><p><code>etc/hadoop/yarn-site.xml</code> dosyasi:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;configuration&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;configuration&gt;</span>
     <span style="color:#f92672">&lt;property&gt;</span>
         <span style="color:#f92672">&lt;name&gt;</span>yarn.nodemanager.aux-services<span style="color:#f92672">&lt;/name&gt;</span>
         <span style="color:#f92672">&lt;value&gt;</span>mapreduce_shuffle<span style="color:#f92672">&lt;/value&gt;</span>
@@ -264,7 +270,7 @@ is yerinde hem sorumluluk alabilmek, hem akisi daha iyi anlayabilmek hem de yer 
 <li>yarn&rsquo;i baslatiyoruz: <code>/opt/hadoop/sbin/start-yarn.sh</code></li>
 </ul>
 <p>artik hadoop kismi tamam. hdfs&rsquo;i kurcalamaniz icin sunlara bakmanizda fayda var:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export PATH<span style="color:#f92672">=</span>/opt/hadoop/bin:$PATH
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export PATH<span style="color:#f92672">=</span>/opt/hadoop/bin:$PATH
 
 hdfs dfs -ls /
 hdfs dfs -mkdir /hello
@@ -273,7 +279,7 @@ hdfs dfs -put localfile.txt /hello/localfile.txt
 </code></pre></div><p>bir de UI burada: <code>http://localhost:8088</code></p>
 <h2 id="spark-2x">spark 2.x</h2>
 <p><a href="https://spark.apache.org/downloads.html">bu sayfadan</a> spark 2.x&rsquo;in hadoop 2.7 icin derlenmis versiyonunu indiriyoruz. tar dosyasini indirdik <code>/opt/spark</code> altina aldik. cok basit bir isimiz var: <code>.bashrc</code> dosyasina path eklemek:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export PATH<span style="color:#f92672">=</span>/opt/spark/bin:$PATH
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export PATH<span style="color:#f92672">=</span>/opt/spark/bin:$PATH
 </code></pre></div><p><code>spark-shell</code> komutuyla spark&rsquo;i kurcalamaya hazirsiniz. ayrica <code>hdfs://localhost:9000/deneme/localfile.txt</code> uri&rsquo;sini kullanarak dosya uzerinde calisabilirsiniz.</p>
 <p>gerisi kitapta. okumak guzel.</p>
 
@@ -386,7 +392,7 @@ hdfs dfs -put localfile.txt /hello/localfile.txt
 
   <footer id="footer">
   <div class="footer-left">
-    Copyright  &copy; 2021  baris yuksel 
+    Copyright  &copy; 2022  baris yuksel 
   </div>
   <div class="footer-right">
     <nav>

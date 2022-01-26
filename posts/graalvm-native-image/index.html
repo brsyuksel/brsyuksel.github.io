@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> graalvm native build | ybaroj | in code we trust</title>
+  <meta name="description" content="baris yuksel, 1990. istanbul. senior software dev @ letgo. scala, clojure, haskell and others. open source, functional programming, distributed systems, linux">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="graalvm native build" />
+<meta property="og:description" content="uzun zamandir linux makinemde graalvm&rsquo;i default jre/jdk olarak kullaniyorum, diger secenekleri yuklemeyi biraktim. graalvm performans katkisi, polyglot ozelligi 1 2 ve native image build secenekleriyle sadece jvm gelistiricileri icin degil ayni zamanda farkli env&rsquo;lerde calisan arkadaslar icin de muthis bir secenek.
+bu blog yazisinda diger ozelliklerini bir kenara birakip bir scala projesinin native build&rsquo;ini almak uzerine biraz kafa yoracagiz.
+ baslamadan soyleyelim, graalvm ile native build aldiginiz zaman uygulamanin icine oyle kocaman bir JVM koymuyor, o dediginiz electron." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://brsyuksel.github.io/posts/graalvm-native-image/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-01-26T17:00:00+03:00" />
+<meta property="article:modified_time" content="2022-01-26T17:00:00+03:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="graalvm native build"/>
+<meta name="twitter:description" content="uzun zamandir linux makinemde graalvm&rsquo;i default jre/jdk olarak kullaniyorum, diger secenekleri yuklemeyi biraktim. graalvm performans katkisi, polyglot ozelligi 1 2 ve native image build secenekleriyle sadece jvm gelistiricileri icin degil ayni zamanda farkli env&rsquo;lerde calisan arkadaslar icin de muthis bir secenek.
+bu blog yazisinda diger ozelliklerini bir kenara birakip bir scala projesinin native build&rsquo;ini almak uzerine biraz kafa yoracagiz.
+ baslamadan soyleyelim, graalvm ile native build aldiginiz zaman uygulamanin icine oyle kocaman bir JVM koymuyor, o dediginiz electron."/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://brsyuksel.github.io/css/style-light.css">
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://brsyuksel.github.io/images/favicon.ico" />
+
+  
+  
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">home</a></li>
+         
+        <li><a href="/posts">posts</a></li>
+         
+        <li><a href="/tags">tags</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://brsyuksel.github.io/posts/hadoop-spark/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f&text=graalvm%20native%20build" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f&title=graalvm%20native%20build" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f&is_video=false&description=graalvm%20native%20build" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=graalvm%20native%20build&body=Check out this article: https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f&title=graalvm%20native%20build" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f&title=graalvm%20native%20build" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f&name=graalvm%20native%20build&description=uzun%20zamandir%20linux%20makinemde%20graalvm%26rsquo%3bi%20default%20jre%2fjdk%20olarak%20kullaniyorum%2c%20diger%20secenekleri%20yuklemeyi%20biraktim.%20graalvm%20performans%20katkisi%2c%20polyglot%20ozelligi%201%202%20ve%20native%20image%20build%20secenekleriyle%20sadece%20jvm%20gelistiricileri%20icin%20degil%20ayni%20zamanda%20farkli%20env%26rsquo%3blerde%20calisan%20arkadaslar%20icin%20de%20muthis%20bir%20secenek.%0abu%20blog%20yazisinda%20diger%20ozelliklerini%20bir%20kenara%20birakip%20bir%20scala%20projesinin%20native%20build%26rsquo%3bini%20almak%20uzerine%20biraz%20kafa%20yoracagiz.%0a%20baslamadan%20soyleyelim%2c%20graalvm%20ile%20native%20build%20aldiginiz%20zaman%20uygulamanin%20icine%20oyle%20kocaman%20bir%20JVM%20koymuyor%2c%20o%20dediginiz%20electron." aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f&t=graalvm%20native%20build" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#on-bilgi">on bilgi</a></li>
+    <li><a href="#reflection">reflection</a>
+      <ul>
+        <li><a href="#sbt-assembly">sbt assembly</a></li>
+        <li><a href="#native-image-agent">native image agent</a></li>
+        <li><a href="#sbt-native-packager">sbt native packager</a></li>
+      </ul>
+    </li>
+    <li><a href="#sonuc">sonuc</a></li>
+  </ul>
+</nav>
+    </div>
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        graalvm native build
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2022-01-26 17:00:00 &#43;0300 &#43;03" itemprop="datePublished">2022-01-26</time>
+          
+        </div>
+        
+        
+        <div class="article-read-time">
+          <i class="far fa-clock"></i>
+          
+          4 minute read
+        </div>
+        
+        
+        
+        <div class="article-tag">
+            <i class="fas fa-tag"></i>
+            
+            
+            <a class="tag-link" href="/tags/scala" rel="tag">scala</a>
+            
+             ,  
+            <a class="tag-link" href="/tags/graalvm" rel="tag">graalvm</a>
+            
+             ,  
+            <a class="tag-link" href="/tags/native-image" rel="tag">native-image</a>
+            
+             ,  
+            <a class="tag-link" href="/tags/cats" rel="tag">cats</a>
+            
+             ,  
+            <a class="tag-link" href="/tags/http4s" rel="tag">http4s</a>
+            
+             ,  
+            <a class="tag-link" href="/tags/typelevel" rel="tag">typelevel</a>
+            
+        </div>
+        
+      </div>
+    </header>
+
+  
+    <div class="content" itemprop="articleBody">
+      <p>uzun zamandir linux makinemde graalvm&rsquo;i default jre/jdk olarak kullaniyorum, diger secenekleri yuklemeyi biraktim. graalvm <a href="https://twitter.com/karlstoney/status/1456616777325158405">performans katkisi</a>, polyglot ozelligi <a href="https://github.com/brsyuksel/ghostparsers">1</a> <a href="https://github.com/brsyuksel/lein-less">2</a> ve native image build secenekleriyle sadece jvm gelistiricileri icin degil ayni zamanda <a href="https://www.graalvm.org/22.0/reference-manual/polyglot-programming/">farkli env&rsquo;lerde</a> calisan arkadaslar icin de muthis bir secenek.</p>
+<p>bu blog yazisinda diger ozelliklerini bir kenara birakip bir scala projesinin native build&rsquo;ini almak uzerine biraz kafa yoracagiz.</p>
+<p><img src="https://media.giphy.com/media/nNxT5qXR02FOM/giphy.gif" alt="dancing cat"></p>
+<blockquote>
+<p>baslamadan soyleyelim, graalvm ile native build aldiginiz zaman uygulamanin icine oyle kocaman bir JVM koymuyor, o dediginiz electron. daha once &ldquo;ne yapiyor ki? icine java koyuyor iste, ihi&rdquo; diyen vizyon arkadaslar olmustu, varliklarina uzulduk.</p>
+</blockquote>
+<p>bir is gorusmesinde assignment olarak alip implemente ettigim, daha sonra aktif bir proje haline getirip kendime playground yaptigim kucuk bir link kisaltma servisim var: <a href="https://github.com/brsyuksel/xurl">xurl</a>. aktif olarak guncelliyor, yer yer <a href="https://github.com/brsyuksel/xurl/#todo">README.md todo section&rsquo;a</a> eklemeler yapip cozmeye calisiyorum. kendisini canliya alma gibi bir planim <a href="https://www.youtube.com/watch?v=NBDgB36mcpo">bazi nedenlerden oturu</a> henuz yok.</p>
+<blockquote>
+<p>burdan yola cikarak yeni baslayan yazilimci arkadaslara network yapmak yerine proje yapmayi onermis olalim. bu jestim unutulmasin.</p>
+</blockquote>
+<p>daha once graalvm kullanarak kucuk scala applerinin native buildini almistim, ayni zamanda <a href="https://github.com/inner-product/http4s-native-image">scala</a>, <a href="https://github.com/clj-easy/graalvm-clojure/blob/master/doc/clojure-graalvm-native-binary.md">clojure</a> ve spring-boot projeleri icin bir cok ornek mevcut, ancak ben biraz daha real world bir ihtiyac duydum ki istedigim gibi bir kaynak bulamadim, sonrasinda da bu konuyu xurl ile deneyimlemek istedim. xurl&rsquo;i typelevel stack, http4s, skunk, redis4cats vs ile gelistirdim, bu anlamda benim gibi fp ile ilgilenen arkadaslar icin real world bir ornek olacagini dusunuyorum.</p>
+<h2 id="on-bilgi">on bilgi</h2>
+<p>graalvm ve jdk surumleri: <code>OpenJDK 64-Bit Server VM GraalVM CE 22.0.0.2 (build 11.0.14+9-jvmci-22.0-b05, ...</code>
+scala surum: <code>2.13.8</code>
+sbt: <code>1.6.1</code>
+ortam: <code>amd ryzen 5 3600x, archlinux</code>
+xurl ile kullanilan lib&rsquo;lerin surum bilgileri <a href="https://github.com/brsyuksel/xurl#tech-stack">README.md&rsquo;de</a> mevcut.</p>
+<blockquote>
+<p>ilk asamada 2.13.7 ile compile etmeyi deneyip basarisiz olmustum. scala&rsquo;daki bir bug compile olmasina musade etmiyor, <a href="https://github.com/scala/bug/issues/12500">ilgili issue</a>. o sirada fix icin PR merge edilmisti, usulca 2.13.8 surumunu bekledim.</p>
+</blockquote>
+<h2 id="reflection">reflection</h2>
+<p>graalvm native image bir app&rsquo;i compile ederken yuklenen ve kullanilan class&rsquo;larin ne oldugunu bilmesi gerekiyor, <a href="https://blog.frankel.ch/configuring-graal-native-aot-reflection/">bu blog yazisi</a> bu ihtiyaci guzelce ozetlemis, oneririm. bir reflection conf hazirlayip dinamik yuklenen class&rsquo;lari, parametrelerini, kullanilan methodlarini <a href="https://github.com/brsyuksel/xurl/tree/main/ci/native-image-configs">burdaki gibi</a> tanimlamamiz lazim. mumkun gibi durmuyor, denemeyin (: bu islemi graalvm ile birlikte gelen <a href="https://www.graalvm.org/22.0/reference-manual/native-image/Agent/">native image agent&rsquo;a</a> birakacagiz.</p>
+<h3 id="sbt-assembly">sbt assembly</h3>
+<p>projeye sbt-assembly pluginini kurup bir guzel über-JAR aliyoruz, bu über-JAR native image agent kullanirken hem classpath&rsquo;lerle bizi ugrastirmayacak, hem de uygulama icerisindeki resource file&rsquo;lari native build&rsquo;e dahil edecek.</p>
+<p>ben soyle kucuk bir <a href="https://github.com/brsyuksel/xurl/blob/main/build.sbt#L10">configuration yapmisim</a> sbt assembly icin.</p>
+<p>uber-jar icin:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sbt assembly
+</code></pre></div><h3 id="native-image-agent">native image agent</h3>
+<p>yapmamiz gereken is über-JAR appimizi calistirirken agent parametresi gecmek ve hazirlanacak conf icin bir path vermek:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java -agentlib:native-image-agent<span style="color:#f92672">=</span>config-output-dir<span style="color:#f92672">=</span>./ci/native-image-configs -jar target/scala-2.13/app-assembly.jar
+</code></pre></div><p>app&rsquo;i yurutup terminate ettikten sonra ilgili conf dosyalarinin olustugunu goreceksiniz. yalniz graalvm soyle bir not dusmus <a href="https://www.graalvm.org/22.0/reference-manual/native-image/Agent/">doc&rsquo;ta</a>:</p>
+<blockquote>
+<p>It is advisable to manually review the generated configuration files. Because the agent observes only code that was executed, the resulting configurations can be missing elements that are used in other code paths. It could also make sense to simplify the generated configurations to make any future manual maintenance easier.</p>
+</blockquote>
+<p>bu kismi atlattiktan sonra image build e gecebiliriz (:</p>
+<h3 id="sbt-native-packager">sbt native packager</h3>
+<p>yine native build sirasinda classpath ve diger parametrelerle ugrasmak yerine sbt-native-packager pluginini kullanip bu adimlardan kurtulabiliriz.</p>
+<p>native packager&rsquo;i yukledikten sonra:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala">addSbtPlugin<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;com.github.sbt&#34;</span> <span style="color:#f92672">%</span> <span style="color:#e6db74">&#34;sbt-native-packager&#34;</span> <span style="color:#f92672">%</span> <span style="color:#e6db74">&#34;1.9.7&#34;</span><span style="color:#f92672">)</span>
+</code></pre></div><p>native-packager ile gelen <code>GraalVMNativeImagePlugin</code> pluginini projede enable ediyoruz:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#f92672">.</span>enablePlugins<span style="color:#f92672">(</span><span style="color:#a6e22e">GraalVMNativeImagePlugin</span><span style="color:#f92672">)</span>
+</code></pre></div><p>sonrasinda project def&rsquo;i uzerinde yapmamiz gereken conf:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala">graalVMNativeImageOptions <span style="color:#f92672">++=</span> <span style="color:#a6e22e">Seq</span><span style="color:#f92672">(</span>
+  <span style="color:#e6db74">&#34;--allow-incomplete-classpath&#34;</span><span style="color:#f92672">,</span>
+  <span style="color:#e6db74">&#34;--enable-http&#34;</span><span style="color:#f92672">,</span>
+  <span style="color:#e6db74">&#34;--enable-https&#34;</span><span style="color:#f92672">,</span>
+  <span style="color:#e6db74">&#34;-H:+AllowVMInspection&#34;</span><span style="color:#f92672">,</span>
+  <span style="color:#e6db74">&#34;-H:ResourceConfigurationFiles=../../ci/native-image-configs/resource-config.json&#34;</span><span style="color:#f92672">,</span>
+  <span style="color:#e6db74">&#34;-H:ReflectionConfigurationFiles=../../ci/native-image-configs/reflect-config.json&#34;</span><span style="color:#f92672">,</span>
+  <span style="color:#e6db74">&#34;-H:JNIConfigurationFiles=../../ci/native-image-configs/jni-config.json&#34;</span><span style="color:#f92672">,</span>
+  <span style="color:#e6db74">&#34;-H:DynamicProxyConfigurationFiles=../../ci/native-image-configs/proxy-config.json&#34;</span><span style="color:#f92672">,</span>
+<span style="color:#f92672">),</span>
+</code></pre></div><p>son dort satir gordugunuz gibi generate edilen reflection ve diger bilgileri iceren json conflarinin parametre olarak gecilmesi ile ilgili, bu kismi daha fazla detaylandirmaya gerek yok.</p>
+<p><code>--allow-incomplete-classpath</code> yer yer bazi type&rsquo;lar sadece runtime aninda resolve olabiliyor (dinamik yuklenen classlar gibi dusunebilirsiniz), bu gibi durumlar native build sirasinda compiletime hatasi gibi gozukebiliyor, bu parametre ile bu problemi asiyoruz.</p>
+<p>http ve https parametrelerini atliyorum.</p>
+<p>xurl icin burdaki ozel durum <code>-H:+AllowVMInspection</code> parametresi. xurl&rsquo;de redis icin <a href="https://redis4cats.profunktor.dev/">redis4cats</a> kutuphanesini kullaniyorum, bu arkadas cats-effect ve fs2 ile gelistirilmis, <a href="https://lettuce.io/">lettuce</a> adindaki redis java client&rsquo;i icin bir wrapper. lettuce, tracing ve profiling icin Java Flight Recorder ile calisiyor ve eventlar publish ediyor. bu parametreyi vermezseniz xurl compile oluyor ancak runtime da <code>event handler not found</code> gibi bir hata aliyorsunuz. ozetle bu parametreyle derleme sirasinda JFR destegini enable etmis oluyoruz.</p>
+<h2 id="sonuc">sonuc</h2>
+<p>ben linux ortamda <code>ubuntu:20.04</code> base bir <a href="https://github.com/brsyuksel/xurl/blob/main/Dockerfile">dockerfile</a> kullanarak 167mb&rsquo;lik bir cikti aldim. native build almam 90sn kadar suruyor.</p>
+<p>apple m1 icin ise durum maalesef soyle, graalvm&rsquo;in m1 islemci destegi yok, tebrikler graalvm. ben docker ile build etmeye calistim ancak native-image process&rsquo;i terminate oldu.
+UTM ile aarch64 bir ubuntu yukleyip uzerinde docker image&rsquo;ini build ettim, 158mb&rsquo;lik bir bir image olustu ve sure 300sn.</p>
+<p>app boot suresi inanilmaz kisa, herhangi bir derlenen dil ile gelistirdiginiz app&rsquo;lerden farki yok. genel gozlemim response time&rsquo;lar 14-15ms&rsquo;ten 5ms&rsquo;lere kadar dustu ancak bunlar dogru kabul edilecebilecek rakamlar degil, bir load test yapip ortalama almak lazim.</p>
+
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">home</a></li>
+         
+          <li><a href="/posts">posts</a></li>
+         
+          <li><a href="/tags">tags</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#on-bilgi">on bilgi</a></li>
+    <li><a href="#reflection">reflection</a>
+      <ul>
+        <li><a href="#sbt-assembly">sbt assembly</a></li>
+        <li><a href="#native-image-agent">native image agent</a></li>
+        <li><a href="#sbt-native-packager">sbt native packager</a></li>
+      </ul>
+    </li>
+    <li><a href="#sonuc">sonuc</a></li>
+  </ul>
+</nav>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f&text=graalvm%20native%20build" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f&title=graalvm%20native%20build" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f&is_video=false&description=graalvm%20native%20build" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=graalvm%20native%20build&body=Check out this article: https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f&title=graalvm%20native%20build" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f&title=graalvm%20native%20build" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f&name=graalvm%20native%20build&description=uzun%20zamandir%20linux%20makinemde%20graalvm%26rsquo%3bi%20default%20jre%2fjdk%20olarak%20kullaniyorum%2c%20diger%20secenekleri%20yuklemeyi%20biraktim.%20graalvm%20performans%20katkisi%2c%20polyglot%20ozelligi%201%202%20ve%20native%20image%20build%20secenekleriyle%20sadece%20jvm%20gelistiricileri%20icin%20degil%20ayni%20zamanda%20farkli%20env%26rsquo%3blerde%20calisan%20arkadaslar%20icin%20de%20muthis%20bir%20secenek.%0abu%20blog%20yazisinda%20diger%20ozelliklerini%20bir%20kenara%20birakip%20bir%20scala%20projesinin%20native%20build%26rsquo%3bini%20almak%20uzerine%20biraz%20kafa%20yoracagiz.%0a%20baslamadan%20soyleyelim%2c%20graalvm%20ile%20native%20build%20aldiginiz%20zaman%20uygulamanin%20icine%20oyle%20kocaman%20bir%20JVM%20koymuyor%2c%20o%20dediginiz%20electron." aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbrsyuksel.github.io%2fposts%2fgraalvm-native-image%2f&t=graalvm%20native%20build" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2022  baris yuksel 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">home</a></li>
+         
+        <li><a href="/posts">posts</a></li>
+         
+        <li><a href="/tags">tags</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+
+
+</html>

@@ -7,7 +7,18 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>baris yuksel</copyright>
-    <lastBuildDate>Sun, 23 May 2021 23:36:23 +0300</lastBuildDate><atom:link href="https://brsyuksel.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 26 Jan 2022 17:00:00 +0300</lastBuildDate><atom:link href="https://brsyuksel.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>graalvm native build</title>
+      <link>https://brsyuksel.github.io/posts/graalvm-native-image/</link>
+      <pubDate>Wed, 26 Jan 2022 17:00:00 +0300</pubDate>
+      
+      <guid>https://brsyuksel.github.io/posts/graalvm-native-image/</guid>
+      <description>uzun zamandir linux makinemde graalvm&amp;rsquo;i default jre/jdk olarak kullaniyorum, diger secenekleri yuklemeyi biraktim. graalvm performans katkisi, polyglot ozelligi 1 2 ve native image build secenekleriyle sadece jvm gelistiricileri icin degil ayni zamanda farkli env&amp;rsquo;lerde calisan arkadaslar icin de muthis bir secenek.
+bu blog yazisinda diger ozelliklerini bir kenara birakip bir scala projesinin native build&amp;rsquo;ini almak uzerine biraz kafa yoracagiz.
+ baslamadan soyleyelim, graalvm ile native build aldiginiz zaman uygulamanin icine oyle kocaman bir JVM koymuyor, o dediginiz electron.</description>
+    </item>
+    
     <item>
       <title>kitap onerisi: apache spark quick start guide</title>
       <link>https://brsyuksel.github.io/posts/hadoop-spark/</link>

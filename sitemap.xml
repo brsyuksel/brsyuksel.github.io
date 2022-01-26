@@ -2,6 +2,36 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://brsyuksel.github.io/tags/cats/</loc>
+    <lastmod>2022-01-26T17:00:00+03:00</lastmod>
+  </url><url>
+    <loc>https://brsyuksel.github.io/tags/graalvm/</loc>
+    <lastmod>2022-01-26T17:00:00+03:00</lastmod>
+  </url><url>
+    <loc>https://brsyuksel.github.io/posts/graalvm-native-image/</loc>
+    <lastmod>2022-01-26T17:00:00+03:00</lastmod>
+  </url><url>
+    <loc>https://brsyuksel.github.io/tags/http4s/</loc>
+    <lastmod>2022-01-26T17:00:00+03:00</lastmod>
+  </url><url>
+    <loc>https://brsyuksel.github.io/tags/native-image/</loc>
+    <lastmod>2022-01-26T17:00:00+03:00</lastmod>
+  </url><url>
+    <loc>https://brsyuksel.github.io/posts/</loc>
+    <lastmod>2022-01-26T17:00:00+03:00</lastmod>
+  </url><url>
+    <loc>https://brsyuksel.github.io/tags/scala/</loc>
+    <lastmod>2022-01-26T17:00:00+03:00</lastmod>
+  </url><url>
+    <loc>https://brsyuksel.github.io/tags/</loc>
+    <lastmod>2022-01-26T17:00:00+03:00</lastmod>
+  </url><url>
+    <loc>https://brsyuksel.github.io/tags/typelevel/</loc>
+    <lastmod>2022-01-26T17:00:00+03:00</lastmod>
+  </url><url>
+    <loc>https://brsyuksel.github.io/</loc>
+    <lastmod>2022-01-26T17:00:00+03:00</lastmod>
+  </url><url>
     <loc>https://brsyuksel.github.io/tags/book/</loc>
     <lastmod>2021-05-23T23:36:23+03:00</lastmod>
   </url><url>
@@ -11,16 +41,7 @@
     <loc>https://brsyuksel.github.io/posts/hadoop-spark/</loc>
     <lastmod>2021-05-23T23:36:23+03:00</lastmod>
   </url><url>
-    <loc>https://brsyuksel.github.io/posts/</loc>
-    <lastmod>2021-05-23T23:36:23+03:00</lastmod>
-  </url><url>
     <loc>https://brsyuksel.github.io/tags/spark/</loc>
-    <lastmod>2021-05-23T23:36:23+03:00</lastmod>
-  </url><url>
-    <loc>https://brsyuksel.github.io/tags/</loc>
-    <lastmod>2021-05-23T23:36:23+03:00</lastmod>
-  </url><url>
-    <loc>https://brsyuksel.github.io/</loc>
     <lastmod>2021-05-23T23:36:23+03:00</lastmod>
   </url><url>
     <loc>https://brsyuksel.github.io/categories/</loc>

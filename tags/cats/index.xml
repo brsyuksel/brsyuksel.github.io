@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>ybaroj | in code we trust</title>
-    <link>https://brsyuksel.github.io/</link>
-    <description>Recent content on ybaroj | in code we trust</description>
+    <title>cats on ybaroj | in code we trust</title>
+    <link>https://brsyuksel.github.io/tags/cats/</link>
+    <description>Recent content in cats on ybaroj | in code we trust</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>baris yuksel</copyright>
-    <lastBuildDate>Wed, 26 Jan 2022 17:00:00 +0300</lastBuildDate><atom:link href="https://brsyuksel.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 26 Jan 2022 17:00:00 +0300</lastBuildDate><atom:link href="https://brsyuksel.github.io/tags/cats/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>graalvm native build</title>
       <link>https://brsyuksel.github.io/posts/graalvm-native-image/</link>
@@ -17,18 +17,6 @@
       <description>uzun zamandir linux makinemde graalvm&amp;rsquo;i default jre/jdk olarak kullaniyorum, diger secenekleri yuklemeyi biraktim. graalvm performans katkisi, polyglot ozelligi 1 2 ve native image build secenekleriyle sadece jvm gelistiricileri icin degil ayni zamanda farkli env&amp;rsquo;lerde calisan arkadaslar icin de muthis bir secenek.
 bu blog yazisinda diger ozelliklerini bir kenara birakip bir scala projesinin native build&amp;rsquo;ini almak uzerine biraz kafa yoracagiz.
  baslamadan soyleyelim, graalvm ile native build aldiginiz zaman uygulamanin icine oyle kocaman bir JVM koymuyor, o dediginiz electron.</description>
-    </item>
-    
-    <item>
-      <title>kitap onerisi: apache spark quick start guide</title>
-      <link>https://brsyuksel.github.io/posts/hadoop-spark/</link>
-      <pubDate>Sun, 23 May 2021 23:36:23 +0300</pubDate>
-      
-      <guid>https://brsyuksel.github.io/posts/hadoop-spark/</guid>
-      <description>sirkette bazi uzaylilar var. bu uzaylilari taniyalim.
-spark, spark sql, hadoop, hive, pig, yarn, &amp;hellip;
-her biri yillar boyu benim icin uzayli arkadaslardi. bir yandan da yillardir kenarindan kosesinden bulasip, az bir seviyede de olsa bilgi sahibi olmak istiyordum.
-is yerinde hem sorumluluk alabilmek, hem akisi daha iyi anlayabilmek hem de yer yer mudahale edebilmek icin bu uzayli arkadaslarla tanismaya karar verdim. bunun icin de amacima hizmet edebilecek bir kitap arayisina koyuldum ki su kitabi buldum:</description>
     </item>
     
   </channel>

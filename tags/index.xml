@@ -7,7 +7,61 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>baris yuksel</copyright>
-    <lastBuildDate>Sun, 23 May 2021 23:36:23 +0300</lastBuildDate><atom:link href="https://brsyuksel.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 26 Jan 2022 17:00:00 +0300</lastBuildDate><atom:link href="https://brsyuksel.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>cats</title>
+      <link>https://brsyuksel.github.io/tags/cats/</link>
+      <pubDate>Wed, 26 Jan 2022 17:00:00 +0300</pubDate>
+      
+      <guid>https://brsyuksel.github.io/tags/cats/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>graalvm</title>
+      <link>https://brsyuksel.github.io/tags/graalvm/</link>
+      <pubDate>Wed, 26 Jan 2022 17:00:00 +0300</pubDate>
+      
+      <guid>https://brsyuksel.github.io/tags/graalvm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>http4s</title>
+      <link>https://brsyuksel.github.io/tags/http4s/</link>
+      <pubDate>Wed, 26 Jan 2022 17:00:00 +0300</pubDate>
+      
+      <guid>https://brsyuksel.github.io/tags/http4s/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>native-image</title>
+      <link>https://brsyuksel.github.io/tags/native-image/</link>
+      <pubDate>Wed, 26 Jan 2022 17:00:00 +0300</pubDate>
+      
+      <guid>https://brsyuksel.github.io/tags/native-image/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>scala</title>
+      <link>https://brsyuksel.github.io/tags/scala/</link>
+      <pubDate>Wed, 26 Jan 2022 17:00:00 +0300</pubDate>
+      
+      <guid>https://brsyuksel.github.io/tags/scala/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>typelevel</title>
+      <link>https://brsyuksel.github.io/tags/typelevel/</link>
+      <pubDate>Wed, 26 Jan 2022 17:00:00 +0300</pubDate>
+      
+      <guid>https://brsyuksel.github.io/tags/typelevel/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>book</title>
       <link>https://brsyuksel.github.io/tags/book/</link>
