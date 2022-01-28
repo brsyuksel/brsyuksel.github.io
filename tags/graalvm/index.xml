@@ -7,7 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>baris yuksel</copyright>
-    <lastBuildDate>Wed, 26 Jan 2022 17:00:00 +0300</lastBuildDate><atom:link href="https://brsyuksel.github.io/tags/graalvm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 Jan 2022 13:00:00 +0300</lastBuildDate><atom:link href="https://brsyuksel.github.io/tags/graalvm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>graalvm native image - load tests</title>
+      <link>https://brsyuksel.github.io/posts/graalvm-native-load-tests/</link>
+      <pubDate>Fri, 28 Jan 2022 13:00:00 +0300</pubDate>
+      
+      <guid>https://brsyuksel.github.io/posts/graalvm-native-load-tests/</guid>
+      <description>xurl projesinin native image&amp;rsquo;ini olusturup calistirmayi basarmis, kucuk bir load test yapma ihtiyacindan bahsetmistik.
+locust framework&amp;rsquo;u kullanarak minimal bir load test case&amp;rsquo;i hazirladim. locust, python ile gelistirilmis, yeterince guclu ve yetenekli, kolay erisilebilir, ucretsiz bir load test framework&amp;rsquo;u. diger secenekler ile kiyaslayip kendisiyle hizlica bir cozum uretebilecegimi dusunerek tercih ettim.
+ locust&amp;rsquo;un distributed load generating gibi muhtesem yetenekleri var, olabilir. bizim paramiz yok. bu nedenle testleri local ortamda gerceklestirdik.
+ test ortami testleri maalesef local ortamda gerceklestirdim.</description>
+    </item>
+    
     <item>
       <title>graalvm native build</title>
       <link>https://brsyuksel.github.io/posts/graalvm-native-image/</link>

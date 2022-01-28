@@ -7,7 +7,52 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>baris yuksel</copyright>
-    <lastBuildDate>Wed, 26 Jan 2022 17:00:00 +0300</lastBuildDate><atom:link href="https://brsyuksel.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 Jan 2022 13:00:00 +0300</lastBuildDate><atom:link href="https://brsyuksel.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>graalvm</title>
+      <link>https://brsyuksel.github.io/tags/graalvm/</link>
+      <pubDate>Fri, 28 Jan 2022 13:00:00 +0300</pubDate>
+      
+      <guid>https://brsyuksel.github.io/tags/graalvm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>load-tests</title>
+      <link>https://brsyuksel.github.io/tags/load-tests/</link>
+      <pubDate>Fri, 28 Jan 2022 13:00:00 +0300</pubDate>
+      
+      <guid>https://brsyuksel.github.io/tags/load-tests/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>locust</title>
+      <link>https://brsyuksel.github.io/tags/locust/</link>
+      <pubDate>Fri, 28 Jan 2022 13:00:00 +0300</pubDate>
+      
+      <guid>https://brsyuksel.github.io/tags/locust/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>native-image</title>
+      <link>https://brsyuksel.github.io/tags/native-image/</link>
+      <pubDate>Fri, 28 Jan 2022 13:00:00 +0300</pubDate>
+      
+      <guid>https://brsyuksel.github.io/tags/native-image/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>scala</title>
+      <link>https://brsyuksel.github.io/tags/scala/</link>
+      <pubDate>Fri, 28 Jan 2022 13:00:00 +0300</pubDate>
+      
+      <guid>https://brsyuksel.github.io/tags/scala/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>cats</title>
       <link>https://brsyuksel.github.io/tags/cats/</link>
@@ -18,38 +63,11 @@
     </item>
     
     <item>
-      <title>graalvm</title>
-      <link>https://brsyuksel.github.io/tags/graalvm/</link>
-      <pubDate>Wed, 26 Jan 2022 17:00:00 +0300</pubDate>
-      
-      <guid>https://brsyuksel.github.io/tags/graalvm/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>http4s</title>
       <link>https://brsyuksel.github.io/tags/http4s/</link>
       <pubDate>Wed, 26 Jan 2022 17:00:00 +0300</pubDate>
       
       <guid>https://brsyuksel.github.io/tags/http4s/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>native-image</title>
-      <link>https://brsyuksel.github.io/tags/native-image/</link>
-      <pubDate>Wed, 26 Jan 2022 17:00:00 +0300</pubDate>
-      
-      <guid>https://brsyuksel.github.io/tags/native-image/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>scala</title>
-      <link>https://brsyuksel.github.io/tags/scala/</link>
-      <pubDate>Wed, 26 Jan 2022 17:00:00 +0300</pubDate>
-      
-      <guid>https://brsyuksel.github.io/tags/scala/</guid>
       <description></description>
     </item>
     
